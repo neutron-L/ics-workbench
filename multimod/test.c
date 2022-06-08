@@ -101,9 +101,9 @@ void test_multimod(int argc, char ** argv)
     }
 }
 
-int main(int argc, char ** argv)
-{
-    test_multimod(argc, argv);
+//int main(int argc, char ** argv)
+//{
+//    test_multimod(argc, argv);
 
-    return 0;
-}
+  //  return 0;
+//}

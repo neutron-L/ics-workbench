@@ -57,7 +57,7 @@ uint64_t multimod(uint64_t a, uint64_t b, uint64_t m) {
 
   a = qa, b = qb;
 
-  if (a == ta && b != tb || a != ta && b == tb)
+  if ((a == ta && b != tb) || (a != ta && b == tb))
   {
     res = m - res;
     if (res == m) 
