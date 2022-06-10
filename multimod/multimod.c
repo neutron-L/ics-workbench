@@ -161,14 +161,14 @@ int highest_bit(uint64_t num)
 	while (l < r - 1)
 	{
 		mid = (l + r) / 2;
-		if ((1<<mid) > num)
+		if ((1ul<<mid) > num)
 			r = mid;
-		else if ((1<<mid) < num)
+		else if ((1ul<<mid) < num)
 			l = mid;
 		else
 			return mid + 1;
 	}
-	if ((1<<l) <= num)
+	if ((1ul<<l) <= num)
 		return r;
 	else
 		return 0;
