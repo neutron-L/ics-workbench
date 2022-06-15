@@ -119,6 +119,7 @@ void *asm_memcpy(void *dest, const void *src, size_t n) {
 int asm_setjmp(asm_jmp_buf env) {
   // return setjmp(env);
   asm(
+    "push %rbp\n\t"
     "movq %rbx,(%rdi)\n\t"
     "movq (%rsp), %rax\n\t"
     "movq %rax, 0x8(%rdi)\n\t"
