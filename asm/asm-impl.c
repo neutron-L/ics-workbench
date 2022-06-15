@@ -116,75 +116,39 @@ void *asm_memcpy(void *dest, const void *src, size_t n) {
   return ret;
 }
 
-// int asm_setjmp(asm_jmp_buf env) {
-//   // return setjmp(env);
-//   asm(
-//     "movq %rbx,(%rdi)\n\t"
-//     "movq (%rsp), %rax\n\t"
-//     "movq %rax, 0x8(%rdi)\n\t"
-//     "movq %r12, 0x10(%rdi)\n\t"
-//     "movq %r13, 0x18(%rdi)\n\t"
-//     "movq %r14, 0x20(%rdi)\n\t"
-//     "movq %r15, 0x28(%rdi)\n\t"
-//     "movq %rsp, %rax\n\t"
-//     "addq $16, %rax\n\t"
-//     "movq %rax, 0x30(%rdi)\n\t"
-//     "movq 0x8(%rsp), %rax\n\t"
-//     "movq %rax, 0x38(%rdi)\n\t"
-//   );
-//   return 0;
-// }
-
-// void asm_longjmp(asm_jmp_buf env, int val) {
-//   // longjmp(env, val);
-//   asm(
-//     "movq (%%rdi), %%rbx\n\t"
-//     "movq 0x8(%%rdi), %%rbp\n\t"
-//     "movq 0x10(%%rdi), %%r12\n\t"
-//     "movq 0x18(%%rdi), %%r13\n\t"
-//     "movq 0x20(%%rdi), %%r14\n\t"
-//     "movq 0x28(%%rdi), %%r15\n\t"
-//     "movq 0x30(%%rdi), %%rsp\n\t"
-//     "mov %0, %%eax\n\t"
-//     "jmp *0x38(%%rdi)\n\t"
-//     :
-//     : "r"(val)
-//     : "%rax", "%rbx", "%r12", "%r13", "%r14", "%r15"
-//   );
-// }
-
-int asm_setjmp(asm_jmp_buf env)
-{
-    asm(
-        "mov %rbx, (%rdi);"
-        "mov %rbp, 8(%rdi);"
-        "mov %r12, 16(%rdi);"
-        "mov %r13, 24(%rdi);"
-        "mov %r14, 32(%rdi);"
-        "mov %r15, 40(%rdi);"
-        "lea 8(%rsp), %rcx;"
-        "mov %rcx, 48(%rdi);"
-        "mov (%rsp), %rcx;"
-        "mov %rcx, 56(%rdi);"
-        );
-    return 0;
+int asm_setjmp(asm_jmp_buf env) {
+  // return setjmp(env);
+  asm(
+    "movq %rbx,(%rdi)\n\t"
+    "movq (%rsp), %rax\n\t"
+    "movq %rax, 0x8(%rdi)\n\t"
+    "movq %r12, 0x10(%rdi)\n\t"
+    "movq %r13, 0x18(%rdi)\n\t"
+    "movq %r14, 0x20(%rdi)\n\t"
+    "movq %r15, 0x28(%rdi)\n\t"
+    "movq %rsp, %rax\n\t"
+    "addq $16, %rax\n\t"
+    "movq %rax, 0x30(%rdi)\n\t"
+    "movq 0x8(%rsp), %rax\n\t"
+    "movq %rax, 0x38(%rdi)\n\t"
+  );
+  return 0;
 }
 
-void asm_longjmp(asm_jmp_buf env, int val)
-{
-    asm(
-        "mov %rsi, %rax;"
-        "test %rax, %rax;"
-        "jnz .L4;"
-        "mov $1, %rax;"
-        ".L4:;"
-        "mov (%rdi), %rbx;"
-        "mov 8(%rdi), %rbp;"
-        "mov 16(%rdi), %r12;"
-        "mov 24(%rdi), %r13;"
-        "mov 32(%rdi), %r14;"
-        "mov 40(%rdi), %r15;"
-        "mov 48(%rdi), %rsp;"
-        "jmp *56(%rdi);"
-    );
+void asm_longjmp(asm_jmp_buf env, int val) {
+  // longjmp(env, val);
+  asm(
+    "movq (%%rdi), %%rbx\n\t"
+    "movq 0x8(%%rdi), %%rbp\n\t"
+    "movq 0x10(%%rdi), %%r12\n\t"
+    "movq 0x18(%%rdi), %%r13\n\t"
+    "movq 0x20(%%rdi), %%r14\n\t"
+    "movq 0x28(%%rdi), %%r15\n\t"
+    "movq 0x30(%%rdi), %%rsp\n\t"
+    "mov %0, %%eax\n\t"
+    "jmp *0x38(%%rdi)\n\t"
+    :
+    : "r"(val)
+    : "%rax", "%rbx", "%r12", "%r13", "%r14", "%r15"
+  );
 }
