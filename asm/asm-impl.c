@@ -132,6 +132,7 @@ int asm_setjmp(asm_jmp_buf env) {
     "movq %rax, 0x30(%rdi)\n\t"
     "movq 0x8(%rsp), %rax\n\t"
     "movq %rax, 0x38(%rdi)\n\t"
+    "pop %rbp\n\t"
   );
   return 0;
 }
