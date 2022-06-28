@@ -19,7 +19,7 @@ int *sieve(int n) {
     if (is_prime[i])
     {
       *p++ = i;
-      for (int j = i + i; j <= n; j += i) {
+      for (int j = i * i; j <= n; j += i) {
         is_prime[j] = false;
       }
     }
