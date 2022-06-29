@@ -40,8 +40,8 @@ static uint8_t ASSOCIATIVITY_WIDTH;
 static uint32_t SET_SIZE;
 static Set * cache;
 
-#define get_idx(addr) (((addr) >> (BLOCK_WIDTH)) & ((1<<SET_WIDTH) - 1))
-#define get_tag(addr) ((addr) >> (BLOCK_WIDTH + SET_WIDTH))
+#define get_idx(addr) (((addr) >> (BLOCK_WIDTH)) & ((1<<ASSOCIATIVITY_WIDTH) - 1))
+#define get_tag(addr) ((addr) >> (BLOCK_WIDTH + ASSOCIATIVITY_WIDTH))
 #define block_offset(addr) ((addr) & (BLOCK_SIZE - 1))
 
 Res cache_access(uintptr_t addr)
