@@ -111,7 +111,7 @@ uint32_t cache_read(uintptr_t addr) {
 void cache_write(uintptr_t addr, uint32_t data, uint32_t wmask) {
     Res res = cache_access(addr);
 
-    Lines * lines = cache[res->sidx];
+    Line * lines = cache[res->sidx];
     lines[res->lidx]->dirty = true;
     uint32_t * p = lines[res->lidx]->data;
     p += block_offset(addr);
