@@ -133,20 +133,20 @@ void init_cache(int total_size_width, int associativity_width) {
   int m = exp2(ASSOCIATIVITY_WIDTH);
   for (int i = 0; i < n; i++)
   {
-    cache[i]->lines = (Line *)malloc(sizeof(Line) * m);
-    cache[i]->next = (uint8_t *)malloc(sizeof(uint8_t) * m);
-    cache[i]->pre = (uint8_t *)malloc(sizeof(uint8_t) * m);
+    cache[i].lines = (Line *)malloc(sizeof(Line) * m);
+    cache[i].next = (uint8_t *)malloc(sizeof(uint8_t) * m);
+    cache[i].pre = (uint8_t *)malloc(sizeof(uint8_t) * m);
 
     for (int j = 0; j < m; j++)
     {
-      cache[i]->next[j] = (j + 1) % m;
-      cache[i]->pre[j] = (j - 1 + m) % m;
+      cache[i].next[j] = (j + 1) % m;
+      cache[i].pre[j] = (j - 1 + m) % m;
     }
-    cache[i]->header = 0;
+    cache[i].header = 0;
 
-    Line * lines = cache[i]->lines;
+    Line * lines = cache[i].lines;
     for (int j = 0; j < m; j++)
-      lines[j]->valid = false;
+      lines[j].valid = false;
   }
 }
 
