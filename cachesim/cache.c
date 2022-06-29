@@ -108,7 +108,10 @@ Res cache_access(uintptr_t addr)
 uint32_t cache_read(uintptr_t addr) {
   Res res = cache_access(addr);
 
-  return cache[res.sidx].lines[res.lidx].data[block_offset(addr & ~0x3)];
+  uint8_t *p = (void *)cache[res.sidx].lines[res.lidx].data + block_offset(addr & ~0x3);
+  uint32_t * q = p;
+  
+  return *q;
 }
 
 void cache_write(uintptr_t addr, uint32_t data, uint32_t wmask) {
@@ -116,9 +119,10 @@ void cache_write(uintptr_t addr, uint32_t data, uint32_t wmask) {
 
     Line * lines = cache[res.sidx].lines;
     lines[res.lidx].dirty = true;
-    uint32_t * p = (uint32_t*)lines[res.lidx].data;
+    uint8_t * p = (uint8_t*)lines[res.lidx].data;
     p += block_offset(addr & ~0x3);
-    *p = (*p & ~wmask) | (data & wmask);
+    uint32_t * q = p;
+    *q = (*q & ~wmask) | (data & wmask);
 }
 
 void init_cache(int total_size_width, int associativity_width) {
