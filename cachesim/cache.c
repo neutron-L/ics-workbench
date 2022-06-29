@@ -144,7 +144,7 @@ void init_cache(int total_size_width, int associativity_width) {
 
     Line * lines = cache[i]->lines;
     for (int j = 0; j < m; j++)
-      Lines[j]->valid = false;
+      lines[j]->valid = false;
   }
 }
 
