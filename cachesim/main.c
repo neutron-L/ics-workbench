@@ -43,6 +43,7 @@ static void trace_exec(struct trace *t, bool is_check) {
     uint32_t ret = cpu_read(t->t.addr, t->t.len);
     if (is_check) {
       uint32_t ret_uncache = cpu_uncache_read(t->t.addr, t->t.len);
+      print("0x%8x x%8x", ret, ret_uncache);
       assert(ret == ret_uncache);
     }
   }
@@ -53,7 +54,7 @@ static void random_trace(void) {
   struct trace t;
 
   int i;
-  for (i = 0; i < 1; i ++) {
+  for (i = 0; i < 1000000; i ++) {
     t.t.len = choose_len[ choose(sizeof(choose_len) / sizeof(choose_len[0])) ] ;
     t.t.addr = choose(MEM_SIZE) & ~(t.t.len - 1);
     t.t.is_write = choose(2);
