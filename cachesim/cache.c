@@ -64,15 +64,18 @@ Res cache_access(uintptr_t addr)
   {
     // adjust the lru record
     if (i == header)
-      header++;
+      s->header++;
     else
     {
+      int8_t *next, *pre;
+      next = s->next;
+      pre = s->pre;
       next[pre[i]] = next[i];
       pre[next[i]] = pre[i];
-      pre[i] = pre[header];
+      pre[i] = pre[s->header];
       next[pre[i]] = i;
-      next[i] = header;
-      pre[header] = i;
+      next[i] = s->header;
+      pre[s->header] = i;
     }
   }
   // cache miss
@@ -80,15 +83,15 @@ Res cache_access(uintptr_t addr)
   {
     uintptr_t block_num;
     // write back
-    if (lines[header]->valid && lines[header]->dirty)
+    if (lines[s->header]->valid && lines[s->header]->dirty)
     {
-      block_num = (lines[header]->tag << SET_WIDTH) | header;
-      mem_write(block_num, lines[header]->data);
+      block_num = (lines[s->header]->tag << SET_WIDTH) | s->header;
+      mem_write(block_num, lines[s->header]->data);
     }
     // read the block
     block_num = addr >> BLOCK_WIDTH;
     mem_read(block_num, lines[header]);
-    i = header++;
+    i = s->header++;
     lines[i]->valid = true;
     lines[i]->dirty = false;
     lines[i]->tag = tag;
