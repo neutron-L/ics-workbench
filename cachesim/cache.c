@@ -67,7 +67,7 @@ Res cache_access(uintptr_t addr)
       s.header++;
     else
     {
-      int8_t *next, *pre;
+      uint8_t *next, *pre;
       next = s.next;
       pre = s.pre;
       next[pre[i]] = next[i];
