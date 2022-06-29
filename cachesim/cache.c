@@ -130,11 +130,11 @@ void init_cache(int total_size_width, int associativity_width) {
   SET_SIZE = 1 << ASSOCIATIVITY_WIDTH;
   ASSOCIATIVITY_WIDTH = associativity_width;
   assert(SET_WIDTH == 6);
-  cache = (Set *)malloc(sizeof(Set) * exp2(SET_WIDTH));
 
   // initialize cache sets
   int n = exp2(SET_WIDTH);
   int m = exp2(ASSOCIATIVITY_WIDTH);
+  cache = (Set *)malloc(sizeof(Set) * n);
   for (int i = 0; i < n; i++)
   {
     cache[i].lines = (Line *)malloc(sizeof(Line) * m);
