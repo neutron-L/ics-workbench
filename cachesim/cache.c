@@ -108,7 +108,7 @@ Res cache_access(uintptr_t addr)
 uint32_t cache_read(uintptr_t addr) {
   Res res = cache_access(addr);
 
-  return cache[res.sidx].lines[res.lidx].data[block_offset(addr)];
+  return cache[res.sidx].lines[res.lidx].data[block_offset(addr & ~0x3)];
 }
 
 void cache_write(uintptr_t addr, uint32_t data, uint32_t wmask) {
