@@ -52,7 +52,7 @@ Res cache_access(uintptr_t addr)
   
   // judge whether cache hit
   Set s = cache[idx];
-  Line * lines = s->lines;
+  Line * lines = s.lines;
   int i;
   for (i = 0; i < SET_SIZE; i++)
   {
@@ -64,18 +64,18 @@ Res cache_access(uintptr_t addr)
   {
     // adjust the lru record
     if (i == header)
-      s->header++;
+      s.header++;
     else
     {
       int8_t *next, *pre;
-      next = s->next;
-      pre = s->pre;
+      next = s.next;
+      pre = s.pre;
       next[pre[i]] = next[i];
       pre[next[i]] = pre[i];
-      pre[i] = pre[s->header];
+      pre[i] = pre[s.header];
       next[pre[i]] = i;
-      next[i] = s->header;
-      pre[s->header] = i;
+      next[i] = s.header;
+      pre[s.header] = i;
     }
   }
   // cache miss
@@ -83,22 +83,22 @@ Res cache_access(uintptr_t addr)
   {
     uintptr_t block_num;
     // write back
-    if (lines[s->header]->valid && lines[s->header]->dirty)
+    if (lines[s.header]->valid && lines[s.header]->dirty)
     {
-      block_num = (lines[s->header]->tag << SET_WIDTH) | s->header;
-      mem_write(block_num, lines[s->header]->data);
+      block_num = (lines[s.header]->tag << SET_WIDTH) | s.header;
+      mem_write(block_num, lines[s.header]->data);
     }
     // read the block
     block_num = addr >> BLOCK_WIDTH;
-    mem_read(block_num, lines[header]);
-    i = s->header++;
+    mem_read(block_num, lines[s.header]);
+    i = s.header++;
     lines[i]->valid = true;
     lines[i]->dirty = false;
     lines[i]->tag = tag;
   }
   Res res;
-  res->sidx = idx;
-  res->lidx = i;
+  res.sidx = idx;
+  res.lidx = i;
 
   return res; 
 }
@@ -108,15 +108,15 @@ Res cache_access(uintptr_t addr)
 uint32_t cache_read(uintptr_t addr) {
   Res res = cache_access(addr);
 
-  return cache[res->sidx]->lines[lidx]->data[block_offset(addr)];
+  return cache[res.sidx]->lines[s.lidx]->data[block_offset(addr)];
 }
 
 void cache_write(uintptr_t addr, uint32_t data, uint32_t wmask) {
     Res res = cache_access(addr);
 
-    Line * lines = cache[res->sidx];
-    lines[res->lidx]->dirty = true;
-    uint32_t * p = lines[res->lidx]->data;
+    Line * lines = cache[res.sidx];
+    lines[res.lidx]->dirty = true;
+    uint32_t * p = lines[res.lidx]->data;
     p += block_offset(addr);
     p &= ~0x3;
     *p = (*p & ~wmask) | (data & wmask);
