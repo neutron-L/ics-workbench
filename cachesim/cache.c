@@ -90,7 +90,7 @@ Res cache_access(uintptr_t addr)
     }
     // read the block
     block_num = addr >> BLOCK_WIDTH;
-    mem_read(block_num, lines[s.header]);
+    mem_read(block_num, lines[s.header].data);
     i = s.header++;
     lines[i].valid = true;
     lines[i].dirty = false;
@@ -114,9 +114,9 @@ uint32_t cache_read(uintptr_t addr) {
 void cache_write(uintptr_t addr, uint32_t data, uint32_t wmask) {
     Res res = cache_access(addr);
 
-    Line * lines = cache[res.sidx];
+    Line * lines = cache[res.sidx].lines;
     lines[res.lidx].dirty = true;
-    uint32_t * p = lines[res.lidx].data;
+    uint32_t * p = (uint32_t*)lines[res.lidx].data;
     p += block_offset(addr & ~0x3);
     *p = (*p & ~wmask) | (data & wmask);
 }
