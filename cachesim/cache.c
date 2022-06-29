@@ -85,7 +85,7 @@ Res cache_access(uintptr_t addr)
     // write back
     if (lines[s.header].valid && lines[s.header].dirty)
     {
-      block_num = (lines[s.header].tag << SET_WIDTH) | s.header;
+      block_num = (lines[s.header].tag << ASSOCIATIVITY_WIDTH) | s.header;
       mem_write(block_num, lines[s.header].data);
     }
     // read the block
