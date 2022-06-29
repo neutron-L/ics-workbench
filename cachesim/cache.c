@@ -23,9 +23,9 @@ typedef struct
 typedef struct 
 {
   Line * lines;
-  int8_t header;
-  int8_t * next;
-  int8_t * pre;
+  uint8_t header;
+  uint8_t * next;
+  uint8_t * pre;
 } Set;
 
 
