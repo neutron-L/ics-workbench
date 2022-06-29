@@ -117,8 +117,7 @@ void cache_write(uintptr_t addr, uint32_t data, uint32_t wmask) {
     Line * lines = cache[res.sidx];
     lines[res.lidx]->dirty = true;
     uint32_t * p = lines[res.lidx]->data;
-    p += block_offset(addr);
-    p &= ~0x3;
+    p += block_offset(addr & ~0x3);
     *p = (*p & ~wmask) | (data & wmask);
 }
 
